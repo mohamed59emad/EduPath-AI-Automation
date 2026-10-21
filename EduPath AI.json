@@ -1,0 +1,620 @@
+{
+  "name": "EduPath AI",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "EduPath AI | Student Registration",
+        "formDescription": "Welcome to EduPath AI! 🎓\n\nFill out this form with your information, interests, and learning goals. We'll use your responses to recommend courses that match your interests, skill level, and educational needs.\n\nLet's find the right learning path for you!",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Full Name",
+              "placeholder": "ex - mohamed emad",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email Address",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Educational Level",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "School Student"
+                  },
+                  {
+                    "option": "University Student"
+                  },
+                  {
+                    "option": "Graduate"
+                  },
+                  {
+                    "option": "Working Professional"
+                  },
+                  {
+                    "option": "- Other"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Interested Field",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "AI & Automation"
+                  },
+                  {
+                    "option": "Programming"
+                  },
+                  {
+                    "option": "Web Development"
+                  },
+                  {
+                    "option": "Data Analysis"
+                  },
+                  {
+                    "option": "Cybersecurity"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Current Skill Level",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Beginner"
+                  },
+                  {
+                    "option": "Intermediate"
+                  },
+                  {
+                    "option": "Advanced"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Learning Goal",
+              "placeholder": "ex - عايز أتعلم Python عشان أبدأ في مجال AI",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Preferred Learning Format",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Video Courses"
+                  },
+                  {
+                    "option": "Hands-on Projects"
+                  },
+                  {
+                    "option": "Reading & Theory"
+                  },
+                  {
+                    "option": "Mixed Learning"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        272,
+        96
+      ],
+      "id": "6655e013-b2e3-487d-8a68-18f48a36ca91",
+      "name": "On form submission",
+      "webhookId": "9cf14942-6e49-488a-bd38-6ed3219da27d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8886a76c-a05e-4b9e-8961-866a9f7ce709",
+              "name": "Student_ID",
+              "value": "={{ Number($now.toMillis().toString().slice(-4)) }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1472,
+        64
+      ],
+      "id": "6a317da1-14da-43e7-9279-85db4bca117f",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1MsM_XyBTMkNltVmG8wWB26aYqJNMybgPED1r634CQ5I",
+          "mode": "list",
+          "cachedResultName": "EduPath AI - Student Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MsM_XyBTMkNltVmG8wWB26aYqJNMybgPED1r634CQ5I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MsM_XyBTMkNltVmG8wWB26aYqJNMybgPED1r634CQ5I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Student_id": "={{ $json.Student_ID }}",
+            "Email": "={{ $json['Email Address'] }}",
+            "interested_field": "={{ $('On form submission').first().json[\"Interested Field\"] }}",
+            "learning_goal": "={{ $('On form submission').first().json[\"Learning Goal\"] }}",
+            "preferred_learning_format": "={{ $('On form submission').first().json[\"Preferred Learning Format\"] }}",
+            "registration_date": "={{ $now.toFormat('yyyy-MM-dd') }}",
+            "Full_name": "={{ $('On form submission').first().json[\"Full Name\"] }}",
+            "phone_number": "={{ $('On form submission').first().json[\"Phone Number\"] }}",
+            "educational_level": "={{ $('On form submission').first().json[\"Educational Level\"] }}",
+            "skill_level": "={{ $('On form submission').item.json['Current Skill Level'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Student_id",
+              "displayName": "Student_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Full_name",
+              "displayName": "Full_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone_number",
+              "displayName": "phone_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "educational_level",
+              "displayName": "educational_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "interested_field",
+              "displayName": "interested_field",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "skill_level",
+              "displayName": "skill_level",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "learning_goal",
+              "displayName": "learning_goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "preferred_learning_format",
+              "displayName": "preferred_learning_format",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "registration_date",
+              "displayName": "registration_date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1712,
+        -144
+      ],
+      "id": "8b6b9493-f322-4e28-856b-25a057bed835",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Iex73Xvgg0vJNco3",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').first().json['Email Address'] }}",
+        "subject": "EduPath AI – Email Verification Code",
+        "message": "=Hello,  Welcome to EduPath AI!  Your email verification code is:  {{ $json.otp }}  This code expires in 5 minutes.  If you didn't request this code, please ignore this email.  Best regards, EduPath AI Team",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        0
+      ],
+      "id": "82779b62-e0fd-4b7a-955a-13818c3dd28c",
+      "name": "Send a message",
+      "webhookId": "bfc8fce6-8f7e-42eb-8c29-f22ae1468909",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pryX4GSJYN5vQDT6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst otp = String(\n  Math.floor(100000 + Math.random() * 900000)\n);\n\nreturn items.map(item => {\n  return {\n    json: {\n      ...item.json,\n      otp: otp,\n      otp_created_at: new Date().toISOString(),\n      otp_expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString()\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        64
+      ],
+      "id": "6fddac85-3734-453c-8980-286f97b52e5e",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Email Address",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Verification Code",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        944,
+        32
+      ],
+      "id": "b1b22c4f-88b9-48fe-851f-4e19dcaf33d4",
+      "name": "Form",
+      "webhookId": "df64171a-d5e5-44ca-a967-da794c85adb7"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3312fc97-32e7-424f-946f-73f2f22b6e7e",
+              "leftValue": "={{ $json[\"Verification Code\"].toString() }}",
+              "rightValue": "={{ $('Code in JavaScript').first().json.otp.toString() }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1184,
+        176
+      ],
+      "id": "252cd1d1-6147-430d-a9d6-cf87c04ae285",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Form').first().json[\"Email Address\"] }}",
+        "subject": "فشل تأكيد البريد الإلكتروني - EduPath AI",
+        "message": "عزيزي الطالب، لقد تم إدخال رمز تأكيد خاطئ. يرجى إعادة محاولة التسجيل والحصول على رمز جديد.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        288
+      ],
+      "id": "b8fb92e2-3bf4-4484-9275-b77dd2f176cb",
+      "name": "Send a message1",
+      "webhookId": "6bcac163-6c52-400c-b152-232d22a6a913",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pryX4GSJYN5vQDT6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=أنت مستشار تعليمي ذكي في منصة **EduPath AI**، متخصص في تصميم مسارات تعلم شخصية تساعد الطلاب على تطوير مهاراتهم وتحقيق أهدافهم المهنية.\n\n## بيانات الطالب\n\n- **اسم الطالب:** {{ $('On form submission').first().json[\"Full Name\"] }}\n- **المستوى التعليمي:** {{ $('On form submission').first().json[\"Educational Level\"] }}\n- **المجال المهتم به:** {{ $('On form submission').first().json[\"Interested Field\"] }}\n- **المستوى الحالي:** {{ $('On form submission').first().json[\"Current Skill Level\"] }}\n- **هدف التعلم الشخصي:** {{ $('On form submission').first().json[\"Learning Goal\"] }}\n\n## المهام المطلوبة\n\n1. حلّل بيانات الطالب وحدّد أهم المهارات التي يحتاج إلى اكتسابها لتحقيق هدفه.\n2. اقترح **كورسَين أو مسارَي تعلم محددين** يتناسبان مع مجاله ومستواه الحالي وهدفه الشخصي.\n3. رتّب التوصيات من الأكثر أولوية إلى الأقل، واشرح سبب اختيار كل توصية.\n4. وضّح المهارات التي سيكتسبها الطالب من كل كورس أو مسار، وكيف ستساعده في تحقيق هدفه.\n5. حدّد ترتيب دراسة التوصيات إذا كان البدء بإحداها قبل الأخرى أكثر منطقية.\n6. اكتب رسالة ترحيبية قصيرة ومشجعة باللغة العربية، موجّهة إلى الطالب باسمه، تشرح باختصار سبب اختيار التوصيات له، وتصلح للإرسال عبر البريد الإلكتروني أو واتساب.\n\n## قواعد التوصية\n\n- اجعل التوصيات مخصصة للطالب، ولا تقدّم إجابات عامة تصلح لأي شخص.\n- راعِ المستوى الحالي للطالب، ولا تقترح مسارات متقدمة دون توضيح المتطلبات السابقة اللازمة لها.\n- فضّل المسارات العملية التي تتضمن تطبيقات ومشروعات، متى كانت مناسبة لهدف الطالب.\n- لا تخترع أسماء كورسات حقيقية أو روابط أو شهادات أو أسعارًا غير متأكد منها.\n- إذا لم تتوفر معلومات كافية عن كورس بعينه، فاقترح موضوعًا أو مسارًا تعليميًا واضحًا بدلًا من اختلاق اسم كورس.\n- لا تفترض أن الطالب يريد العمل في مجال معين لمجرد أنه مهتم به؛ اربط التوصيات بهدف التعلم الذي ذكره.\n\n## تنسيق الإجابة\n\n**أولًا: تحليل مختصر لاحتياجات الطالب**\n\n**ثانيًا: التوصية الأولى**\n- اسم الكورس أو المسار.\n- سبب الاختيار.\n- المهارات المستهدفة.\n- المتطلبات السابقة إن وجدت.\n\n**ثالثًا: التوصية الثانية**\n- اسم الكورس أو المسار.\n- سبب الاختيار.\n- المهارات المستهدفة.\n- المتطلبات السابقة إن وجدت.\n\n**رابعًا: ترتيب التعلم المقترح**\n\n\nاكتب الرسالة بأسلوب احترافي وودود ومختصر، وتجنّب المبالغة في الوعود أو ضمان نتائج مهنية."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        1936,
+        32
+      ],
+      "id": "ada75899-972a-4a5b-933d-e6965a67ed6b",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').first().json[\"Email Address\"] }}",
+        "subject": "مسارك التعليمي المخصص وتوصيات الكورسات - EduPath AI 🎓",
+        "message": "=<div style=\"font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: rtl; text-align: right; background-color: #f4f7f6; padding: 30px; color: #2c3e50;\">\n  \n  <div style=\"max-width: 650px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05);\">\n    \n    <!-- Header -->\n    <div style=\"background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center; color: #ffffff;\">\n      <h1 style=\"margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 0.5px;\">🎓 EduPath AI</h1>\n      <p style=\"margin: 8px 0 0 0; font-size: 14px; opacity: 0.9;\">مسارك التعليمي المخصص وتوصيات الكورسات</p>\n    </div>\n\n    <!-- Body Content -->\n    <div style=\"padding: 30px; line-height: 1.8;\">\n      \n      <!-- Greeting Card -->\n      <div style=\"background-color: #eef2f7; border-right: 4px solid #2a5298; padding: 15px 20px; border-radius: 6px; margin-bottom: 25px;\">\n        <h3 style=\"margin: 0; color: #1e3c72; font-size: 18px;\">أهلاً بك يا {{ $('On form submission').first().json[\"Full Name\"] }} 👋</h3>\n        <p style=\"margin: 5px 0 0 0; font-size: 14px; color: #555;\">يسعدنا أن نكون جزءاً من رحلتك التعليمية لتطوير مهاراتك في مجالات الذكاء الاصطناعي والأتمتة.</p>\n      </div>\n\n      <!-- Cleaned AI Report Container -->\n      <div style=\"background-color: #ffffff; border: 1px solid #e1e8ed; border-radius: 8px; padding: 20px; margin-bottom: 25px; font-size: 14px; color: #34495e; line-height: 1.8;\">\n{{ \n  $json.content.parts[0].text\n    .replace(/\\*\\*/g, '')\n    .replace(/###/g, '')\n    .replace(/---/g, '')\n    .replace(/\\n/g, '<br>') \n}}\n      </div>\n\n      <!-- WhatsApp Action Button -->\n      <div style=\"text-align: center; margin: 30px 0 15px 0;\">\n        <a href=\"https://wa.me/201029492773\" style=\"background-color: #25d366; color: #ffffff; padding: 12px 28px; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 15px; display: inline-block; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);\">تواصل معنا عبر الواتساب 💬</a>\n      </div>\n\n    </div>\n\n    <!-- Footer -->\n    <div style=\"background-color: #f8f9fa; border-top: 1px solid #eee; padding: 15px; text-align: center; font-size: 12px; color: #888;\">\n      فريق عمل <strong>EduPath AI</strong> — جميع الحقوق محفوظة\n    </div>\n\n  </div>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2416,
+        -96
+      ],
+      "id": "2a0f25a1-70ff-4164-9e9b-abc69a6735e9",
+      "name": "Send a message2",
+      "webhookId": "c1b6cd98-0542-4c9b-86b0-3c5b25521180",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "pryX4GSJYN5vQDT6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "=1451061538082243",
+        "recipientPhoneNumber": "={{ $('On form submission').first().json[\"Phone Number\"].startsWith('0') ? '2' + $('On form submission').first().json[\"Phone Number\"] : $('On form submission').first().json[\"Phone Number\"] }}",
+        "textBody": "={{ $json.content.parts[0].text.replace(/\\*\\*/g, '').replace(/###/g, '').replace(/---/g, '') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        2384,
+        160
+      ],
+      "id": "d760ddcb-b5fe-4e24-814c-1da5868784a6",
+      "name": "Send message",
+      "webhookId": "8394ba6a-07ce-4ba8-a58e-e874a8549612",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "pylbWtz8JaZXLLCH",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4fc7017b-240d-4447-af8a-997d120fb207",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc1e10b99b7edfcb6f905d25f58336b0b4215fde4d2e4bf38d9dc38c2d8dfb74"
+  },
+  "nodeGroups": [],
+  "id": "muPG4OgcVVUbSD6J",
+  "tags": []
+}
