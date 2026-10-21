@@ -14,10 +14,36 @@ An end-to-end AI-powered automation system that generates personalized education
 * **Multi-Channel Delivery:** Delivers recommendations instantly via **Meta WhatsApp Cloud API** and backup email notifications.
 
 ---
+System Architecture :
 
-## 🏗️ System Architecture
-
-![EduPath AI Architecture](./architecture.png)
+[ 1. Student Submission ]
+         │ (On form submission)
+         ▼
+[ 2. OTP Generation ]
+         │ (Code in JavaScript)
+         ▼
+[ 3. Send Verification ]
+         │ (Gmail: Send OTP)
+         ▼
+[ 4. Student Verification ]
+         │ (Form: Next Form Page)
+         ▼
+[ 5. Decision Check (If Condition) ]
+        ├── ❌ Incorrect OTP ──► [ Send Error Mail ]
+        │
+        └── 🟢 Correct OTP 
+                  │
+                  ▼
+         [ 6. Data Cleaning & Format ] (Edit Fields)
+                  │
+                  ▼
+         [ 7. Database Logging ] (Google Sheets: Append Row)
+                  │
+                  ▼
+         [ 8. AI Recommendations ] (Google Gemini: Message Model)
+                  │
+                  ├──► [ 9a. Backup Email ] (Gmail: Send Recommendations)
+                  └──► [ 9b. Instant Delivery ] (WhatsApp API: Send Message)
 
 ```text
 [ Form Submission ] ──► [ Generate OTP ] ──► [ Send Email OTP ]
